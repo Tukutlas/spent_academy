@@ -28,5 +28,11 @@ class GeneralHelper
         $token = explode(" ",$request->header()['authorization'][0]);
         return User::findByAuthToken($token[1]);
     }
+
+    // public static function uploadFile($file) {
+    //     $cloudder = Cloudder::upload($file->getRealPath());
+    //     $uploadResult = $cloudder->getResult();
+    //    return $uploadResult['url'];
+    // }
     
 }

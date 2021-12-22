@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class UserService
 {
-    public static function createUser(Request $request)
+    public static function createUser(Request $request, $user_type)
     {
         $token = Str::random(64);
 
@@ -25,7 +25,7 @@ class UserService
         $user->password = Hash::make($request->password);
         $user->login_token = $token;
         $user->status = "active";
-        $user->user_type = $request->user_type;
+        $user->user_type = $user_type;
         $user->save();
     }
 
