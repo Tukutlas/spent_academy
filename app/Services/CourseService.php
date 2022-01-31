@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
-
+use App\Helper\GeneralHelper;
+use App\Models\Module;
+use App\Models\Topic;
 
 class CourseService
 {
@@ -25,6 +27,11 @@ class CourseService
         $course->difficulty = $request->difficulty;
         $course->created_by = $user->id;
         $course->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'course created successfully'
+        ]);
         
     }
 
@@ -156,7 +163,7 @@ class CourseService
     public static function getCourseTopics($id)
     {
         $course = self::validateCourseExistense($id);
-        $course_topics = Topics::where('course_id', $id)->first();
+        $course_topics = Topic::where('course_id', $id)->get();
         
         $data = [
             'course'=> $course,
@@ -164,8 +171,14 @@ class CourseService
         ];
         return response()->json([
             'status' => true,
-            'data' => $topic
+            'data' => $data
         ]);
+    }
+
+    public function getInstructorCourses($id)
+    {
+        $instructor_courses = Course::where('created_by', $id)->get();
+        return $instructor_courses;
     }
 }
 

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
 use Illuminate\Http\Request;
+use App\Services\CourseService;
 use App\Helper\GeneralHelper;
 
-
-class Instructors extends Controller
+class courses extends Controller
 {
     protected $user;
     
@@ -17,12 +16,9 @@ class Instructors extends Controller
         $this->user = GeneralHelper::getActiveUser($request);
     }
 
-    public function updateInstructorProfile(Request $request)
+    public function createCourse(Request $request)
     {
-        
+        $create_course = CourseService::createCourse($request, $this->user);
+        return $create_course;
     }
-
-
-
-    
 }

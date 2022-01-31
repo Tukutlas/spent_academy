@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\UserAccess;
+use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -10,7 +12,7 @@ use Illuminate\Support\Str;
 
 class UserService
 {
-    public static function createUser(Request $request, $user_type)
+    public static function createUser(Request $request)
     {
         $token = Str::random(64);
 
@@ -25,8 +27,27 @@ class UserService
         $user->password = Hash::make($request->password);
         $user->login_token = $token;
         $user->status = "active";
-        $user->user_type = $user_type;
+        $user->user_type = $request->user_type;
         $user->save();
+
+        
+        if($request->user_type == 'student'){
+            $user_access = new UserAccess;
+            $user_access->user_id = $user->id;
+            $section = Section::where('name', $request->user_type)->first();
+            $user_access->section_id = $section->id;
+            $user_access->save();
+        }elseif ($request->user_type == 'instructor') {        
+            $user_access = new UserAccess;
+            $user_access->user_id = $user->id;
+            $section = Section::where('name', $request->user_type)->first();
+            $user_access->section_id = $section->id;
+            $user_access->save();
+        }
+
+        
+        
+        return $user;
     }
 
     public static function validateUser($user)
@@ -38,5 +59,17 @@ class UserService
         );
 
         return $user;
+    }
+
+    public static function getUserAccess($user)
+    {
+        $user_accesses = UserAccess::with(['sections'])->where('user_id', $user->id)
+            ->get();
+
+        $access = [];
+        foreach ($user_accesses as $user_access) { 
+            $access[] = $user_access->sections;
+         }
+         return $access;
     }
 }

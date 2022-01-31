@@ -28,6 +28,7 @@ $app->withFacades();
 $app->withEloquent();
 
 class_alias('JD\Cloudder\Facades\Cloudder', 'Cloudder');
+class_alias('Laravel\Socialite\Facades\Socialite','Socialite');
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,7 @@ $app->routeMiddleware([
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(JD\Cloudder\CloudderServiceProvider::class);
+$app->register(Laravel\Socialite\SocialiteServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

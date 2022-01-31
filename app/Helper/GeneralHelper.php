@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 // use Log;
+use Cloudder;
 use App\Models\User;
 // use App\Models\Cities;
 // use App\Models\States;
@@ -29,10 +30,10 @@ class GeneralHelper
         return User::findByAuthToken($token[1]);
     }
 
-    // public static function uploadFile($file) {
-    //     $cloudder = Cloudder::upload($file->getRealPath());
-    //     $uploadResult = $cloudder->getResult();
-    //    return $uploadResult['url'];
-    // }
+    public static function uploadFile($file) {
+        $cloudder = Cloudder::upload($file->getRealPath());
+        $uploadResult = $cloudder->getResult();
+       return $uploadResult['url'];
+    }
     
 }

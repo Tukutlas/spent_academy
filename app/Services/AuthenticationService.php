@@ -18,7 +18,7 @@ class AuthenticationService
         $user = UserService::validateUser($user);
 
      
-        $login_response['email'] = $user->email;
+        $login_response['email'] = $user->email_address;
         $login_response['login_token'] = $user->login_token;  
         // $login_response['tenant_apps'] = $tenant_apps;
         // $login_response['tenant_info'] = $tenant;
@@ -26,12 +26,10 @@ class AuthenticationService
         //     $login_response['app_access'] = $tenant_apps;
         // }
 
-        // if($user->is_tenant == false) {
-        //     $tenantuser_products = UserService::getTenantUserProducts($user);
-        //     foreach ($tenantuser_products as $product) { 
-        //         $login_response['app_access'][] = $product;
-        //     }                     
-        // }
+        $user_accesses = UserService::getUserAccess($user);
+        foreach ($user_accesses as $user_access) { 
+            $login_response['user_access'][] = $user_access;
+        }                     
         
         $login_response['user'] = $user;
         return $login_response;

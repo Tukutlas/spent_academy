@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class InstructorService
 {
-    public static function createInstructor(Request $request)
-    {
-        $user_type = 'instructor';
-        $instructor = UserService::createUser($request, $user_type);
-    }
     
     public static function upgradeUserToInstructor(Request $request, $user)
     {
