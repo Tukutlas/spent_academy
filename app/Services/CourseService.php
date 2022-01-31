@@ -175,10 +175,16 @@ class CourseService
         ]);
     }
 
-    public function getInstructorCourses($id)
+    public static function getInstructorCourses($id)
     {
         $instructor_courses = Course::where('created_by', $id)->get();
         return $instructor_courses;
+    }
+
+    public static function getInstructorSingleCourse($id, $user)
+    {
+        $instructor_course = Course::where('id', $id)->where('created_by', $user->id)->get();
+        return $instructor_course;
     }
 }
 

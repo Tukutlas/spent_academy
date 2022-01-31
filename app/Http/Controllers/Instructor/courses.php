@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\CourseService;
 use App\Helper\GeneralHelper;
+use App\Services\InstructorService;
 
-class courses extends Controller
+class Courses extends Controller
 {
     protected $user;
     
@@ -20,5 +21,17 @@ class courses extends Controller
     {
         $create_course = CourseService::createCourse($request, $this->user);
         return $create_course;
+    }
+
+    public function getInstructorCourses(Request $request)
+    {
+        $courses = CourseService::getInstructorCourses($this->user->id);
+        return $courses;
+    }
+
+    public function getCourse($id)
+    {
+        $course = CourseService::getInstructorSingleCourse($id, $this->user);
+        return $course;
     }
 }

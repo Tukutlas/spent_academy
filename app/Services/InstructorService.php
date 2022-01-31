@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\InstructorProfile;
 use Illuminate\Http\Request;
 
 
@@ -19,5 +20,11 @@ class InstructorService
             'status' => true,
             'data' => $user_upgrade
         ]);
+    }
+
+    public static function getInstructorProfile($user)
+    {
+        $profile = InstructorProfile::where('instructor_id', $user->id)->get();
+        return $profile;
     }
 }
