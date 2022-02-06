@@ -19,6 +19,20 @@ class Courses extends Controller
 
     public function createCourse(Request $request)
     {
+        $rules = [
+            'category'=> 'required|numeric',
+            'title'=> 'required',
+            'description'=> 'required',
+            'price'=> 'required|numeric',
+            'video'=> 'required',
+            'difficulty'=> 'required'
+        ];
+
+        $validator = \Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return $this->respondWithErrorMessage($validator);
+        }
+
         $create_course = CourseService::createCourse($request, $this->user);
         return $create_course;
     }

@@ -27,15 +27,31 @@ $router->group($auth, function () use ($router) {
     // $router->post('/forgot-password', 'ForgotPassword@index');
     // $router->post('/reset/{token}', 'Reset@resetPassword');
     // $router->get('/reset/{token}', 'Reset@index');
-    $router->post('/logout', 'Users@logoutUser');
+    $router->post('/logout', 'Logout@index');
 });
 
-$product = [   
-    'namespace' => 'User',
+$course = [   
+    'namespace' => 'Instructor',
     'middleware' => 'token_auth',
-    'prefix'    => 'product',
+    'prefix'    => 'course',
 ];
 
-$router->group($product, function () use ($router) {
-    $router->post('/create', 'Products@create');
+$router->group($course, function () use ($router) {
+    $router->get('/get/{id}', 'Courses@getCourse');
+    $router->post('/create', 'Courses@createCourse');
+});
+
+$admin = [
+    'namespace' => 'Admin',
+    'middleware' => 'token_auth',
+    'prefix'    => 'admin',
+];
+
+$router->group($admin, function () use ($router){
+    $router->get('/get-course-categories', 'Courses@getCourseCategories');
+    $router->get('/get-course-subcategories', 'Courses@getCourseSubcategories');
+    $router->get('/get-course-subcategories-by-category/{id}', 'Courses@getCourseSubcategoriesByCategory');
+
+    $router->post('/create-course-category', 'Courses@createCourseCategory');
+    $router->post('/create-course-subcategory', 'Courses@createCourseSubcategory');
 });
