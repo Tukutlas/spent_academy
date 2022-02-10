@@ -7,23 +7,91 @@ use Illuminate\Http\Request;
 use App\Helper\GeneralHelper;
 use App\Models\Module;
 use App\Models\Topic;
+use App\Models\CourseCategory;
+use App\Models\CourseSubcategory;
+use App\Models\UserCourse;
 
 class CourseService
 {
+    public static function createCourseCategory($request)
+    {
+        $category = new CourseCategory;
+        $category->title = $request->title;
+        $category->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'course category created successfully'
+        ]);
+        
+    }
+
+    public static function getCourseCategories()
+    {
+        $categories = CourseCategory::all();
+        return response()->json([
+            'status' => true,
+            'data' => $categories
+        ]);
+    }
+
+    public static function createCourseSubcategory($request)
+    {
+        $subcategory = new CourseSubcategory;
+        $subcategory->category_id = $request->category;
+        $subcategory->title = $request->title;
+        $subcategory->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'course subcategory created successfully'
+        ]);
+        
+    }
+
+    public static function getCourseSubcategories()
+    {
+        $subcategories = CourseSubcategory::all();
+        return response()->json([
+            'status' => true,
+            'data' => $subcategories
+        ]);
+    }
+
+    public static function getCourseSubcategoriesByCategory($id)
+    {
+        $subcategories = CourseSubcategory::where('category_id', $id)->get();
+        return response()->json([
+            'status' => true,
+            'data' => $subcategories
+        ]);
+    }
+
     public static function createCourse($request, $user)
     {
+        $course = new Course;
+        $course->category_id = $request->category;
+        $course->subcategory_id = $request->subcategory;
+        $course->title = $request->title;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->status = "inactive";
+        $course->approval_status = "pending";
+
         $file = "";
 
         if ($request->hasFile('image')) {
             $file = GeneralHelper::uploadFile($request->file('image'));
+            $course->image = $file;
         }
 
-        $course = new Course;
-        $course->title = $request->title;
-        $course->price = $request->price;
-        $course->status = "inactive";
-        $course->approval_status = "pending";
-        $course->image = $file;
+        $video_file = "";
+
+        if ($request->hasFile('video')) {
+            $video_file = GeneralHelper::uploadFile($request->file('image'));
+            $course->video = $video_file;
+        }
+        
         $course->difficulty = $request->difficulty;
         $course->created_by = $user->id;
         $course->save();
@@ -185,6 +253,26 @@ class CourseService
     {
         $instructor_course = Course::where('id', $id)->where('created_by', $user->id)->get();
         return $instructor_course;
+    }
+
+    public static function getStudentCourses($perpage, $user)
+    {
+        $user_courses = UserCourse::where('user_id', $user->id)
+        ->orderBy('id','desc')->paginate($perpage);
+    
+        $remapped = $user_courses->getCollection()->transform(function ($item) {
+            $course = Course::where('id', $item->course_id)->first();
+            $item->title = $course->title;
+            $item->image = $course->image;
+            return $item;
+        });
+    
+        $data = ['expense_types' => $user_courses->setCollection($remapped)];
+        
+        return response()->json([
+            'status' => true,
+            'data' => $data    
+        ]);
     }
 }
 

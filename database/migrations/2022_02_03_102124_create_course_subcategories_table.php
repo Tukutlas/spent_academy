@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstructorProfileTable extends Migration
+class CreateCourseSubcategoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class CreateInstructorProfileTable extends Migration
      */
     public function up()
     {
-        Schema::create('instructor_profile', function (Blueprint $table) {
+        Schema::create('course_subcategories', function (Blueprint $table) {
             $table->id();
+            $table->string('category_id');
+            $table->string('title');
+            $table->enum('status', ['inactive','active']);
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ class CreateInstructorProfileTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('instructor_profile');
+        Schema::dropIfExists('course_subcategories');
     }
 }

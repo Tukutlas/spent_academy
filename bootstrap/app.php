@@ -29,6 +29,7 @@ $app->withEloquent();
 
 class_alias('JD\Cloudder\Facades\Cloudder', 'Cloudder');
 class_alias('Laravel\Socialite\Facades\Socialite','Socialite');
+// class_alias('Ferdous\OtpValidator\OtpValidatorServiceProvider','OtpValidator');
 
 /*
 |--------------------------------------------------------------------------
@@ -81,7 +82,7 @@ $app->configure('app');
 
 $app->routeMiddleware([
     // 'auth' => App\Http\Middleware\Authenticate::class,
-    'auth' => App\Http\Middleware\AuthToken::class,
+    'token_auth' => App\Http\Middleware\AuthToken::class,
 ]);
 
 /*
@@ -101,6 +102,7 @@ $app->routeMiddleware([
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 $app->register(JD\Cloudder\CloudderServiceProvider::class);
 $app->register(Laravel\Socialite\SocialiteServiceProvider::class);
+// $app->register(Ferdous\OtpValidator\OtpValidatorServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

@@ -19,5 +19,8 @@ class StudentService
 
     }
 
-
+    public static function getStudentCourses($perpage,$user)
+    {
+        $courses = 
+    }
 }

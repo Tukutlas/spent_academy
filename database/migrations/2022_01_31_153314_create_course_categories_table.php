@@ -16,7 +16,7 @@ class CreateCourseCategoriesTable extends Migration
         Schema::create('course_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('status');
+            $table->enum('status', ['inactive','active']);
             $table->timestamps();
             $table->softDeletes();
         });

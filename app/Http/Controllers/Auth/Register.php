@@ -18,9 +18,6 @@ class Register extends Controller
                 'last_name' => 'required',
                 'email' => 'required|unique:users,email_address',
                 'phone' => 'required|digits:11',
-                'country'=> 'required|numeric',
-                'state' => 'required|numeric',
-                'city'=> 'required|numeric',
                 'password' => 'required|min:6',
                 'user_type' => 'required'  
             ];

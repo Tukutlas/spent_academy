@@ -31,4 +31,15 @@ class Students extends Controller
         return $students;
     }
 
+    public function myCourses(Request $request)
+    {
+        $perpage = 10;
+        if($request->perpage) {
+            $perpage = $request->perpage;
+        }
+
+        $students = StudentService::getStudentCourses($perpage, $this->user);
+        return $students;
+    }
+
 }

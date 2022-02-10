@@ -16,13 +16,15 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
+            $table->string('category_id')->nullable();
+            $table->string('subcategory_id')->nullable();
             $table->string('title');
             $table->string('description');
-            $table->string('video');
             $table->string('crossout_price');
             $table->string('price');
             $table->string('difficulty');
-            $table->string('image');
+            $table->string('image')->nullable();
+            $table->string('video')->nullable();
             $table->boolean('is_approved')->default(False);
             $table->enum('status', ['inactive','active']);
             $table->timestamps();
